@@ -59,6 +59,12 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
 					<finalName>mowitnow</finalName>
+
+					<!-- Change appendAssemblyId to true if you use multiple configurations, -->
+					<!-- otherwise they will overwrite each other -->
+					<!-- set to false for ease of use -->
+					<appendAssemblyId>false</appendAssemblyId>
+
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
