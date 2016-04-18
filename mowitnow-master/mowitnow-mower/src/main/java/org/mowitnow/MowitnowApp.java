@@ -11,6 +11,12 @@ import org.mowitnow.parser.MowitnowFileParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * An implementation of the Mowitnow test from Xebia.
+ * 
+ * @author Arnaud
+ *
+ */
 public class MowitnowApp {
 
 	/**
@@ -36,6 +42,13 @@ public class MowitnowApp {
 		this.mowerAppData = mowerAppData;
 	}
 
+	/**
+	 * Application entry point, a single argument is required, and is simply the
+	 * path to a file containing the Mowitnow program to execute.
+	 * 
+	 * @param args
+	 *            the path to a Mowitnow file
+	 */
 	public static void main(String[] args) {
 
 		if (args == null || args.length != 1 || args[0].length() == 0) {
