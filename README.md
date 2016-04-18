@@ -6,12 +6,12 @@ Mowitnow is a simple test project using Java.
 
 Building the project
 ----
-Execute `mvn clean install` in the root directory to build mowitnow-master and mowitnow-mower.
+Execute `mvn clean install` in the mowtinow-master directory to build mowitnow-master and mowitnow-mower (or just `mvn clean package` to avoid copying it in your local maven repository)
 
 Generate the documentation
 ----
-Execute `mvn javadoc:javadoc` in the root directory to generate the javadoc for this project
+Execute `mvn javadoc:javadoc` in the mowtinow-master directory to generate the javadoc for this project
 
 Usage
 ---
-`java -jars mowitnow <sample-file>`
+`java -jar mowitnow.jar <sample-file>`
