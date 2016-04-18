@@ -14,4 +14,4 @@ Execute `mvn javadoc:javadoc` in the mowtinow-master directory to generate the j
 
 Usage
 ---
-`java -jar mowitnow <sample-file>`
+`java -jar mowitnow.jar <sample-file>`
