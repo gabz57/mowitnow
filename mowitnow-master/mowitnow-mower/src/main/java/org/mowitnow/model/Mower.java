@@ -8,6 +8,9 @@ import org.mowitnow.instruction.Instruction;
 /**
  * Represents a mower for a specific lawn, with a required initial position
  * which must be inside the limits of the lawn.
+ * <p>
+ * When the position changes, the change is effective inside the
+ * {@link Position} instance, which is not replaced by a new instance.
  * 
  * @author Arnaud
  *
@@ -42,6 +45,7 @@ public class Mower {
 		}
 		this.lawn = lawn;
 		this.position = initialPosition;
+		this.lawn.register(this);
 	}
 
 	/**
@@ -68,9 +72,34 @@ public class Mower {
 	 */
 	public void move(Movement movement) {
 		final Coordinate nextPosition = Coordinate.computeNextCoordinate(position);
-		if (lawn.contains(nextPosition)) {
+		if (canMoveTo(nextPosition)) {
 			position.setCoordinate(nextPosition);
 		} // else skip move
+	}
+
+	/**
+	 * Tests whether nothing prevents this Mower to go to the next position on
+	 * the lawn.
+	 * <p>
+	 * This method should remain private since the next position to test must be
+	 * directly next to the current position.
+	 * <p>
+	 * This method ensures that the next position is on the lawn and that the
+	 * next position is free before the move (no other mower is stopped on that
+	 * position).
+	 * <p>
+	 * If a mower would be next to this one and moving in the same direction,
+	 * the move would be possible, but this method doesn't allow this move. As
+	 * the mowers don't move concurrently, we don't check whether multiple mower
+	 * are about to go to the same position, this implies to know next
+	 * instructions of the other mowers on the lawn.
+	 * 
+	 * @param nextCoordinate
+	 *            the next coordinate of the mower
+	 * @return true if the mower can move to the given position
+	 */
+	private boolean canMoveTo(final Coordinate nextCoordinate) {
+		return lawn.contains(nextCoordinate) && lawn.isCoordinateFree(nextCoordinate);
 	}
 
 	/**

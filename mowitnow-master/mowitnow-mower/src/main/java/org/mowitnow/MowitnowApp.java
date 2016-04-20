@@ -1,6 +1,8 @@
 package org.mowitnow;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.mowitnow.exception.MowitnowInvalidDataException;
 import org.mowitnow.exception.MowitnowParseException;
@@ -78,18 +80,28 @@ public class MowitnowApp {
 	public void run() {
 
 		int mowerProcessCounter = 0;
+		Map<MowerInitializationData, Mower> mowersWithInitialDataMap = new HashMap<>();
+		// place all the mowers on the lawn
 		for (MowerInitializationData mowerData : mowerAppData.getMowerInitialDataList()) {
-			mowerProcessCounter++;
 			Mower mower = new Mower(mowerAppData.getLawn(), mowerData.getInitialPosition());
+			mowersWithInitialDataMap.put(mowerData, mower);
+		}
+
+		// process the instructions, one mower after another
+		for (Map.Entry<MowerInitializationData, Mower> mowerWithInitializationData : mowersWithInitialDataMap
+				.entrySet()) {
+			mowerProcessCounter++;
+			Mower mower = mowerWithInitializationData.getValue();
 
 			log.debug("Processing mower #{}, initial position : {}", mowerProcessCounter, mower.getPosition());
 
-			mower.processInstructions(mowerData.getInstructions());
+			mower.processInstructions(mowerWithInitializationData.getKey().getInstructions());
 
 			log.debug("Processed  mower #{}, final position   : {}", mowerProcessCounter, mower.getPosition());
 
 			System.out.println(mower.getPosition());
 		}
+
 	}
 
 }

@@ -1,5 +1,8 @@
 package org.mowitnow.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a lawn to mow, which is a simple rectangle defined by two
  * {@link Coordinate}s, its lower left corner (the {@link Coordinate#ORIGIN})
@@ -12,8 +15,15 @@ package org.mowitnow.model;
  */
 public class Lawn {
 
-	/** The opposite corner of the origin. */
+	/**
+	 * The opposite corner of the lawn, relatively to its origin.
+	 */
 	private final Coordinate upperRightCorner;
+
+	/**
+	 * The mowers running on the lawn.
+	 */
+	private List<Mower> mowers = new ArrayList<>();
 
 	/**
 	 * Creates a lawn by defining the coordinate of its upper right corner. Note
@@ -82,6 +92,35 @@ public class Lawn {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Make the Lawn aware of Mower running on it.
+	 * 
+	 * @param mower
+	 *            the mower to register
+	 */
+	public void register(Mower mower) {
+		mowers.add(mower);
+	}
+
+	/**
+	 * For a given mower, checks whether any mower is already at the given
+	 * {@link Coordinate} on the lawn.
+	 * 
+	 * @param coordinate
+	 *            the coordinate to test
+	 * @return true if no mower is at the given coordinate
+	 */
+	public boolean isCoordinateFree(Coordinate coordinate) {
+		boolean coordinateFree = true;
+		for (Mower mower : mowers) {
+			if (mower.getPosition().getCoordinate().equals(coordinate)) {
+				coordinateFree = false;
+				break;
+			}
+		}
+		return coordinateFree;
 	}
 
 }
