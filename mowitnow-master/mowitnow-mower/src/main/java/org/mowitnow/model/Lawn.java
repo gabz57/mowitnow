@@ -113,14 +113,7 @@ public class Lawn {
 	 * @return true if no mower is at the given coordinate
 	 */
 	public boolean isCoordinateFree(Coordinate coordinate) {
-		boolean coordinateFree = true;
-		for (Mower mower : mowers) {
-			if (mower.getPosition().getCoordinate().equals(coordinate)) {
-				coordinateFree = false;
-				break;
-			}
-		}
-		return coordinateFree;
+		return !mowers.stream().anyMatch(m -> m.getPosition().getCoordinate().equals(coordinate));
 	}
 
 }

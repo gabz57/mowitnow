@@ -55,9 +55,7 @@ public class Mower {
 	 *            instructions to process
 	 */
 	public void processInstructions(List<Instruction> instructions) {
-		for (Instruction instruction : instructions) {
-			instruction.execute(this);
-		}
+		instructions.forEach(i -> i.execute(this));
 	}
 
 	/**

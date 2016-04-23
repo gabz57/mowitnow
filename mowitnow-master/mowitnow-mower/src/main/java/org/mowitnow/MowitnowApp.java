@@ -2,10 +2,13 @@ package org.mowitnow;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.mowitnow.exception.MowitnowInvalidDataException;
 import org.mowitnow.exception.MowitnowParseException;
+import org.mowitnow.instruction.Instruction;
 import org.mowitnow.model.Mower;
 import org.mowitnow.model.MowitnowAppData;
 import org.mowitnow.model.MowerInitializationData;
@@ -78,29 +81,16 @@ public class MowitnowApp {
 	 * Executes the mowers instructions following a sequential order.
 	 */
 	public void run() {
-
-		int mowerProcessCounter = 0;
-		Map<MowerInitializationData, Mower> mowersWithInitialDataMap = new HashMap<>();
-		// place all the mowers on the lawn
-		for (MowerInitializationData mowerData : mowerAppData.getMowerInitialDataList()) {
-			Mower mower = new Mower(mowerAppData.getLawn(), mowerData.getInitialPosition());
-			mowersWithInitialDataMap.put(mowerData, mower);
-		}
-
-		// process the instructions, one mower after another
-		for (Map.Entry<MowerInitializationData, Mower> mowerWithInitializationData : mowersWithInitialDataMap
-				.entrySet()) {
-			mowerProcessCounter++;
-			Mower mower = mowerWithInitializationData.getValue();
-
-			log.debug("Processing mower #{}, initial position : {}", mowerProcessCounter, mower.getPosition());
-
-			mower.processInstructions(mowerWithInitializationData.getKey().getInstructions());
-
-			log.debug("Processed  mower #{}, final position   : {}", mowerProcessCounter, mower.getPosition());
-
-			System.out.println(mower.getPosition());
-		}
+		// Initialize the mower(s) on the lawn
+		Map<Mower, List<Instruction>> mowersWithInstructions = mowerAppData.getMowerInitialDataList().stream()
+				.collect(Collectors.toMap(initData -> new Mower(mowerAppData.getLawn(), initData.getInitialPosition()),
+						initData -> initData.getInstructions()));
+		// Process them sequentially
+		mowersWithInstructions.forEach((mower, instructions) -> {
+			log.info("Processing mower, initial position : {}", mower.getPosition());
+			mower.processInstructions(instructions);
+			log.info("Processed  mower, final position   : {}", mower.getPosition());
+		});
 
 	}
 

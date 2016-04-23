@@ -25,9 +25,8 @@ public class InstructionsExpression extends AbstractMowitnowExpression<List<Inst
 
 	@Override
 	protected List<Instruction> parseExpression() throws MowitnowParseException {
-		char[] instructionChars = inputString.toCharArray();
-		List<Instruction> instructions = new ArrayList<>(instructionChars.length);
-		for (char instructionChar : instructionChars) {
+		List<Instruction> instructions = new ArrayList<>(inputString.length());
+		for (char instructionChar : inputString.toCharArray()) {
 			instructions.add(parseInstruction(String.valueOf(instructionChar)));
 		}
 		return instructions;

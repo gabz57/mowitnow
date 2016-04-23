@@ -8,6 +8,16 @@ import java.util.regex.Pattern;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+/**
+ * This class is probably overkill for the need and is here for the show...
+ * <p>
+ * The aim is only to avoid the use of exception to test whether a String is
+ * part of an Enum, using regular expression automatically created from a given
+ * Enum class with some Java 8 code.
+ * 
+ * @author Arnaud
+ *
+ */
 public class EnumUtil {
 
 	private static Map<Class<? extends Enum<?>>, Pattern> isOneOfPatterns = new HashMap<>();
