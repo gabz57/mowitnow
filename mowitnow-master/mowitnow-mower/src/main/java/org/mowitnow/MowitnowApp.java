@@ -1,7 +1,6 @@
 package org.mowitnow;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -11,7 +10,6 @@ import org.mowitnow.exception.MowitnowParseException;
 import org.mowitnow.instruction.Instruction;
 import org.mowitnow.model.Mower;
 import org.mowitnow.model.MowitnowAppData;
-import org.mowitnow.model.MowerInitializationData;
 import org.mowitnow.parser.MowitnowFileParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
