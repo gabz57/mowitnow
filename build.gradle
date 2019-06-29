@@ -1,0 +1,79 @@
+import io.franzbecker.gradle.lombok.task.DelombokTask
+
+plugins {
+    // select the tag to show dependencies versions
+    // https://github.com/spring-projects/spring-boot/blob/master/spring-boot-project/spring-boot-dependencies/pom.xml
+    id 'org.springframework.boot' version '2.1.6.RELEASE'
+    id 'java'
+    id 'application'
+    id 'jacoco'
+    id 'io.franzbecker.gradle-lombok' version '3.1.0'
+}
+
+wrapper {
+    gradleVersion = "5.3.1"
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'org.mowitnow'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+archivesBaseName = 'Mowitnow'
+
+application {
+    applicationName = 'Mowitnow'
+    mainClassName = 'org.mowitnow.MowitnowApp'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+
+    implementation "ch.qos.logback:logback-classic"
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: "junit"
+    }
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation "org.junit.platform:junit-platform-launcher"
+    testImplementation "org.mockito:mockito-junit-jupiter"
+}
+
+compileJava {
+    options.compilerArgs << '-Xlint:unchecked'
+}
+
+test {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Runs the unit tests."
+    useJUnitPlatform()
+}
+test.finalizedBy jacocoTestReport
+
+task delombok(type: DelombokTask, dependsOn: compileJava) {
+    ext.outputDir = file("$buildDir/delombok")
+    outputs.dir(outputDir)
+    sourceSets.main.java.srcDirs.each {
+        inputs.dir(it)
+        args(it, "-d", outputDir)
+    }
+}
+
+javadoc {
+    dependsOn delombok
+    source = delombok.outputDir
+    failOnError = false
+}
